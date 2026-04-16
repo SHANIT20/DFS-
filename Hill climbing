@@ -1,0 +1,10 @@
+def hill_climbing():
+    current = 0
+    while True:
+        neighbor = current + 1
+        if neighbor > 10:
+            break
+        current = neighbor
+    return current
+
+print("Result:", hill_climbing())
