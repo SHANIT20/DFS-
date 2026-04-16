@@ -1,0 +1,41 @@
+import random
+
+cities = [(0,0),(1,3),(4,3),(6,1),(3,0)]
+
+def distance(a, b):
+    return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
+
+def total_distance(route):
+    dist = 0
+    for i in range(len(route)):
+        dist += distance(route[i], route[(i+1)%len(route)])
+    return dist
+
+def create_route():
+    route = cities[:]
+    random.shuffle(route)
+    return route
+
+def mutate(route):
+    i, j = random.sample(range(len(route)), 2)
+    route[i], route[j] = route[j], route[i]
+
+def genetic():
+    population = [create_route() for _ in range(10)]
+
+    for _ in range(100):
+        population.sort(key=total_distance)
+        new_pop = population[:5]
+
+        while len(new_pop) < 10:
+            child = new_pop[random.randint(0,4)][:]
+            mutate(child)
+            new_pop.append(child)
+
+        population = new_pop
+
+    best = min(population, key=total_distance)
+    print("Best Route:", best)
+    print("Distance:", total_distance(best))
+
+genetic()
